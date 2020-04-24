@@ -47,18 +47,22 @@ module Enumerable
     true
   end
 
-  def my_any?
+  def my_any?(pattern = nil)
 
     self.my_each do |x|
-      if block_given?
-        return false unless yield x
+      if x == nil or x == false
+        return true
+      elsif block_given?
+        return true if yield x
+      elsif pattern.class == Regexp
+        return true if pattern =~ x
       elsif pattern.class == Class
-        return false unless x.class == pattern
+        return true if x.class == pattern
       else
-        true
+        return false
       end
     end
-    true
+    false
   end
 
   def my_none?          ##### Double check the value for empty
@@ -78,5 +82,7 @@ evens = ([1,2,3,4,5]).my_select do |n|
 end
 p evens
 
-all = ([1,2,3,4,5]).my_all?(/s/)
+all = ([1,2,3,4,5]).my_any? do |n|
+  n == 's'
+end
 p all
