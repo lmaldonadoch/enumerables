@@ -82,12 +82,23 @@ module Enumerable
     end
     true
   end
+
+  def my_count(item = nil)
+    if item.nil? and not block_given?
+      return self.length
+    else
+      count = 0
+      self.my_each do |x|
+        if block_given?
+          count += 1 if yield x
+        else
+          count += 1 if x == item
+        end
+      end
+    end
+    return count
+  end
 end
 
-evens = ([1,2,3,4,5]).my_select do |n|
-  n % 2 == 0
-end
-p evens
-
-all = ([1,2,3,4,nil]).my_none?(String)
+all = ([1,2,3,4,5, 4, 4, 6, 7, 4]).my_count
 p all
