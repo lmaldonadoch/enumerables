@@ -139,7 +139,7 @@ all = [1, 2, 3, 4, 5, 4, 4, 6, 7, 4].my_inject(100) do |sum, n|
 end
 p all
 
-square = Proc.new do |x|
+square = proc do |x|
   x * x
 end
 
@@ -149,14 +149,14 @@ end)
 
 p([1, 2, 3, 4, 5].map(&square))
 
-[1, 2, 3, 4, 5].my_each_with_index {|n, i| p i}
+[1, 2, 3, 4, 5].my_each_with_index { |_n, i| p i }
 
-p([1, 2, 3, 4, 5].my_select {|n| n % 2 == 0})
+p([1, 2, 3, 4, 5].my_select { |n| (n % 2).zero? })
 
-p([1, 2, 3, 4, 5].my_all? {|n| n < 10})
+p([1, 2, 3, 4, 5].my_all? { |n| n < 10 })
 
-p([1, 2, 3, 4, nil].my_any? {|n| n == 10})
+p([1, 2, 3, 4, nil].my_any? { |n| n == 10 })
 
-p([1, 2, 3, 4, true].my_none? {|n| n == 1})
+p([1, 2, 3, 4, true].my_none? { |n| n == 1 })
 
-p([1, 2, 3, 4, 5].my_count {|n| n % 2 == 0})
+p([1, 2, 3, 4, 5].my_count { |n| (n % 2).zero? })
