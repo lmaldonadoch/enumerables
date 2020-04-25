@@ -25,6 +25,8 @@ module Enumerable
     ret_arr
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+
   def my_all?(pattern = nil)
     return false if include?(nil) || include?(false)
 
@@ -77,6 +79,8 @@ module Enumerable
     true
   end
 
+  # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+
   def my_count(item = nil)
     return length if item.nil? && !block_given?
 
@@ -96,9 +100,7 @@ module Enumerable
     return to_enum unless block_given?
 
     ret_arr = []
-    my_each do |x|
-      ret_arr << (!proc.nil? ? proc.call(x) : yield(x))
-    end
+    my_each { |x| ret_arr << (!proc.nil? ? proc.call(x) : yield(x)) }
     ret_arr
   end
 
@@ -108,18 +110,13 @@ module Enumerable
 
       sum = (args.length.positive? ? args.shift : sum = dummy.shift)
 
-      dummy.my_each do |x|
-        sum = sum.send(args[0].to_s, x)
-      end
+      dummy.my_each { |x| sum = sum.send(args[0].to_s, x) }
       return sum
     end
 
     sum = (args.length.positive? ? args[0] : dummy.shift)
 
-    dummy.my_each do |x|
-      sum = yield sum, x
-    end
-
+    dummy.my_each { |x| sum = yield sum, x }
     sum
   end
 
@@ -128,7 +125,7 @@ module Enumerable
   end
 end
 
-puts "The array input for all our methods is [1, 2, 3, 4, 5]"
+puts 'The array input for all our methods is [1, 2, 3, 4, 5]'
 puts ' '
 
 all = [1, 2, 3, 4, 5].my_inject(100) do |sum, n|
@@ -143,13 +140,13 @@ end
 
 array = [1, 2, 3, 4, 5]
 
-p "The result for my_map with a block of n * 100 is #{array.my_map {|n| n * 100}}"
+p "The result for my_map with a block of n * 100 is #{array.my_map { |n| n * 100 }}"
 puts ' '
 
-puts "The result for my_map with a proc x * x is #{(array.map(&square))}"
+puts "The result for my_map with a proc x * x is #{array.map(&square)}"
 puts ' '
 
-print  "The result of my_each_with_index for the index is "
+print 'The result of my_each_with_index for the index is '
 array.my_each_with_index { |_n, i| print(i.to_s + ' ') }
 puts ' '
 puts ' '
