@@ -1,19 +1,17 @@
+# frozen_string_literal: true
+
 module Enumerable
   def my_each
     return to_enum unless block_given?
 
-    self.length.times do |x|
-      yield self[x]
-    end
+    self.length.times{|x| yield self[x]}
     self
   end
 
   def my_each_with_index
     return to_enum unless block_given?
 
-    self.length.times do |x|
-      yield self[x], x
-    end
+    self.length.times{ |x| yield self[x], x}
     self
   end
 
@@ -30,11 +28,11 @@ module Enumerable
   end
 
   def my_all?(pattern = nil)
-    
+    return false if self.include?(nil)
+    return false if self.include?(false)
+
     self.my_each do |x|
-      if x === nil or x === false
-        return false
-      elsif block_given?
+      if block_given?
         return false unless yield x
       elsif pattern.class == Regexp
         return false unless pattern =~ x
@@ -48,11 +46,11 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
+    return true if self.include?(nil)
+    return true if self.include?(false)
 
     self.my_each do |x|
-      if x == nil or x == false
-        return true
-      elsif block_given?
+      if block_given?
         return true if yield x
       elsif pattern.class == Regexp
         return true if pattern =~ x
@@ -66,11 +64,10 @@ module Enumerable
   end
 
   def my_none?(pattern = nil)
-    
+    return true if self.include?(true)
+
     self.my_each do |x|
-      if x == true
-        return false
-      elsif block_given?
+      if block_given?
         return false if yield x
       elsif pattern.class == Regexp
         return false if pattern =~ x
@@ -84,17 +81,18 @@ module Enumerable
   end
 
   def my_count(item = nil)
-    if item.nil? and not block_given?
+    if item.nil? && !block_given?
       return self.length
     else
       count = 0
       self.my_each do |x|
         if block_given?
           count += 1 if yield x
-        else
-          count += 1 if x == item
+        elsif x == item
+          count += 1
         end
       end
+
     end
     count
   end
@@ -110,26 +108,18 @@ module Enumerable
   end
 
   def my_inject(*args)
-    
     dummy = self.dup
     unless block_given?
 
-      if args.length > 1
-        sum = args.shift
-      else
-        sum = dummy.shift
-      end
+      sum = (args.length.positive? ? args.shift : sum = dummy.shift)
+
       dummy.my_each do |x|
         sum = sum.send(args[0].to_s, x)
       end
       return sum
     end
 
-    if args.length.positive?
-      sum = args[0]
-    else
-      sum = dummy.shift
-    end
+    sum = (args.length.positive? ? args[0] : dummy.shift)
 
     dummy.my_each do |x|
       sum = yield sum, x
@@ -144,16 +134,29 @@ module Enumerable
 
 end
 
-# all = ([1,2,3,4,5, 4, 4, 6, 7, 4]).my_inject(100) do |sum, n|
-#   sum*n
-# end
-# p all
+all = [1, 2, 3, 4, 5, 4, 4, 6, 7, 4].my_inject(100) do |sum, n|
+  sum * n
+end
+p all
 
 square = Proc.new do |x|
-  x*x
+  x * x
 end
 
-p ([1,2,3,4,5].map do |n| 
-  n*n
+p([1, 2, 3, 4, 5].map do |n|
+  n * 100
 end)
 
+p([1, 2, 3, 4, 5].map(&square))
+
+[1, 2, 3, 4, 5].my_each_with_index {|n, i| p i}
+
+p([1, 2, 3, 4, 5].my_select {|n| n % 2 == 0})
+
+p([1, 2, 3, 4, 5].my_all? {|n| n < 10})
+
+p([1, 2, 3, 4, nil].my_any? {|n| n == 10})
+
+p([1, 2, 3, 4, true].my_none? {|n| n == 1})
+
+p([1, 2, 3, 4, 5].my_count {|n| n % 2 == 0})
