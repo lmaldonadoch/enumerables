@@ -1,4 +1,4 @@
-# bubble-sort
+# Advanced Blocks - Enumerable Module!
 
 > In this project, I rewrote some of the most commonly used Ruby Enumerable methods. It was a great exercise to understand how the ruby methods work, how to modify a Module, practice how to use yields, and procs along with all the previously acquired knowledge.
 
