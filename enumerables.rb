@@ -96,9 +96,52 @@ module Enumerable
         end
       end
     end
-    return count
+    count
   end
+
+  def my_map
+    return to_enum unless block_given?
+
+    ret_arr = []
+    self.my_each do |x|
+      ret_arr << (yield x)
+    end
+    ret_arr
+  end
+
+  def my_inject (*args)
+    
+    dummy = self.dup
+    unless block_given?
+
+      if args.length > 1
+        sum = args.shift
+      else
+        sum = dummy.shift
+      end
+      dummy.my_each do |x|
+        sum = sum.send(args[0].to_s, x)
+      end
+      return sum
+    end
+
+    if args.length > 0
+      sum = args[0]
+    else
+      sum = dummy.shift
+    end
+
+    dummy.my_each do |x|
+      sum = yield sum, x
+    end
+
+    sum
+  end
+
 end
 
-all = ([1,2,3,4,5, 4, 4, 6, 7, 4]).my_count
+all = ([1,2,3,4,5, 4, 4, 6, 7, 4]).my_inject(100) do |sum, n|
+  sum*n
+end
 p all
+
