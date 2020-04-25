@@ -99,17 +99,17 @@ module Enumerable
     count
   end
 
-  def my_map
+  def my_map (proc)
     return to_enum unless block_given?
 
     ret_arr = []
     self.my_each do |x|
-      ret_arr << (yield x)
+      ret_arr << proc.call(x)
     end
     ret_arr
   end
 
-  def my_inject (*args)
+  def my_inject(*args)
     
     dummy = self.dup
     unless block_given?
@@ -125,7 +125,7 @@ module Enumerable
       return sum
     end
 
-    if args.length > 0
+    if args.length.positive?
       sum = args[0]
     else
       sum = dummy.shift
@@ -138,10 +138,20 @@ module Enumerable
     sum
   end
 
+  def multiply_els
+    my_inject(:*)
+  end
+
 end
 
-all = ([1,2,3,4,5, 4, 4, 6, 7, 4]).my_inject(100) do |sum, n|
-  sum*n
+# all = ([1,2,3,4,5, 4, 4, 6, 7, 4]).my_inject(100) do |sum, n|
+#   sum*n
+# end
+# p all
+
+square = Proc.new do |x|
+  x*x
 end
-p all
+
+p [1,2,3,4,5].map(&square)
 
