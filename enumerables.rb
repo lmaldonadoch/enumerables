@@ -1,17 +1,15 @@
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
     return to_enum unless block_given?
 
-    self.length.times{|x| yield self[x]}
+    length.times { |x| yield self[x] }
     self
   end
 
   def my_each_with_index
     return to_enum unless block_given?
 
-    self.length.times{ |x| yield self[x], x}
+    length.times { |x| yield self[x], x }
     self
   end
 
@@ -19,19 +17,18 @@ module Enumerable
     return to_enum unless block_given?
 
     ret_arr = []
-    self.my_each do |x|
+    my_each do |x|
       next unless yield(x)
 
-        ret_arr << x
-      end
-      ret_arr
+      ret_arr << x
+    end
+    ret_arr
   end
 
   def my_all?(pattern = nil)
-    return false if self.include?(nil)
-    return false if self.include?(false)
+    return false if include?(nil) || include?(false)
 
-    self.my_each do |x|
+    my_each do |x|
       if block_given?
         return false unless yield x
       elsif pattern.class == Regexp
@@ -46,10 +43,10 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-    return true if self.include?(nil)
-    return true if self.include?(false)
+    return true if include?(nil)
+    return true if include?(false)
 
-    self.my_each do |x|
+    my_each do |x|
       if block_given?
         return true if yield x
       elsif pattern.class == Regexp
@@ -64,9 +61,9 @@ module Enumerable
   end
 
   def my_none?(pattern = nil)
-    return true if self.include?(true)
+    return true if include?(true)
 
-    self.my_each do |x|
+    my_each do |x|
       if block_given?
         return false if yield x
       elsif pattern.class == Regexp
@@ -81,19 +78,17 @@ module Enumerable
   end
 
   def my_count(item = nil)
-    if item.nil? && !block_given?
-      return self.length
-    else
-      count = 0
-      self.my_each do |x|
-        if block_given?
-          count += 1 if yield x
-        elsif x == item
-          count += 1
-        end
-      end
+    return length if item.nil? && !block_given?
 
+    count = 0
+    my_each do |x|
+      if block_given?
+        count += 1 if yield x
+      elsif x == item
+        count += 1
+      end
     end
+
     count
   end
 
@@ -101,14 +96,14 @@ module Enumerable
     return to_enum unless block_given?
 
     ret_arr = []
-    self.my_each do |x|
+    my_each do |x|
       ret_arr << (!proc.nil? ? proc.call(x) : yield(x))
     end
     ret_arr
   end
 
   def my_inject(*args)
-    dummy = self.dup
+    dummy = dup
     unless block_given?
 
       sum = (args.length.positive? ? args.shift : sum = dummy.shift)
@@ -131,32 +126,45 @@ module Enumerable
   def multiply_els
     my_inject(:*)
   end
-
 end
 
-all = [1, 2, 3, 4, 5, 4, 4, 6, 7, 4].my_inject(100) do |sum, n|
+puts "The array input for all our methods is [1, 2, 3, 4, 5]"
+puts ' '
+
+all = [1, 2, 3, 4, 5].my_inject(100) do |sum, n|
   sum * n
 end
-p all
+puts "The result for my_inject(100) {|sum, n| sum * n} is #{all}"
+puts ' '
 
 square = proc do |x|
   x * x
 end
 
-p([1, 2, 3, 4, 5].map do |n|
-  n * 100
-end)
+array = [1, 2, 3, 4, 5]
 
-p([1, 2, 3, 4, 5].map(&square))
+p "The result for my_map with a block of n * 100 is #{array.my_map {|n| n * 100}}"
+puts ' '
 
-[1, 2, 3, 4, 5].my_each_with_index { |_n, i| p i }
+puts "The result for my_map with a proc x * x is #{(array.map(&square))}"
+puts ' '
 
-p([1, 2, 3, 4, 5].my_select { |n| (n % 2).zero? })
+print  "The result of my_each_with_index for the index is "
+array.my_each_with_index { |_n, i| print(i.to_s + ' ') }
+puts ' '
+puts ' '
 
-p([1, 2, 3, 4, 5].my_all? { |n| n < 10 })
+puts "This is the result of my_select for even numbers is #{array.my_select { |n| (n % 2).zero? }}"
+puts ' '
 
-p([1, 2, 3, 4, nil].my_any? { |n| n == 10 })
+puts "This is the result of my_all for n < 10 #{array.my_all? { |n| n < 10 }}"
+puts ' '
 
-p([1, 2, 3, 4, true].my_none? { |n| n == 1 })
+puts "This is the result of my_any for n == 10 #{array.my_any? { |n| n == 10 }}"
+puts ' '
 
-p([1, 2, 3, 4, 5].my_count { |n| (n % 2).zero? })
+puts "This is the result of my_none for n == 1 #{array.my_none? { |n| n == 1 }}"
+puts ' '
+
+puts "This is the result of my_count for even numbers is #{array.my_count { |n| (n % 2).zero? }}"
+puts ' '
