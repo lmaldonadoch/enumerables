@@ -1,18 +1,14 @@
 # bubble-sort
 
-> This is our first Ruby project. In this project, we applied the Ruby basis that we learned during the material provided. We used loops, arrays, method definitions, array methods and use of yield.
+> In this project, I rewrote some of the most commonly used Ruby Enumerable methods. It was a great exercise to understand how the ruby methods work, how to modify a Module, practice how to use yields, and procs along with all the previously acquired knowledge.
 
-![screenshot](http://upload.wikimedia.org/wikipedia/commons/c/c8/Bubble-sort-example-300px.gif)
+![screenshot](images/screenshot1.png)
 
-![screenshot](images/screenshot2.png)
-
-![screenshot](images/screenshot3.png)
-
-This project works with any kind of arrays, with repeated numbers, empty arrays, and so on. We were able to include all the necessary dependencies as well.
+These new personalized methods return the same variable type and output that the original methods of the Module. To achieve that, I had to write some complex coding that overpassed the allowed complexity by Rubocop, so I had to override the CyclomaticComplexity cop.
 
 ## Live version
 
-[Live Version](https://repl.it/@lmaldonadoch/Bubble-Sort)
+[Live Version](https://repl.it/@lmaldonadoch/Enumerable-methods)
 
 ## Built With
 
@@ -28,7 +24,7 @@ $ cd <folder>
 ```
 
 ```
-$ git clone git@github.com:lmaldonadoch/bubble-sort.git
+$ git clone git@github.com:lmaldonadoch/enumerables.git
 ```
 
 ## Author
@@ -38,12 +34,6 @@ $ git clone git@github.com:lmaldonadoch/bubble-sort.git
 - Github: [@lmaldonadoch](https://github.com/lmaldonadoch)
 - Twitter: [@LuisAngelMCh](https://twitter.com/LuisAngelMCh)
 - Linkedin: [linkedin](https://www.linkedin.com/in/luis-angel-maldonado-5b503a1a3/)
-
-👤 **Fernando Bahamodes**
-
-- Github: [@ferbaco86](https://github.com/ferbaco86)
-- Twitter: [@ferbac0](https://twitter.com/ferbac0)
-- Linkedin: [linkedin](https://www.linkedin.com/in/fernando-bahamondes-correa/)
 
 ## 🤝 Contributing
 
