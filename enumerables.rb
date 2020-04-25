@@ -99,12 +99,12 @@ module Enumerable
     count
   end
 
-  def my_map (proc)
+  def my_map(proc = nil)
     return to_enum unless block_given?
 
     ret_arr = []
     self.my_each do |x|
-      ret_arr << proc.call(x)
+      ret_arr << (!proc.nil? ? proc.call(x) : yield(x))
     end
     ret_arr
   end
@@ -153,5 +153,7 @@ square = Proc.new do |x|
   x*x
 end
 
-p [1,2,3,4,5].map(&square)
+p ([1,2,3,4,5].map do |n| 
+  n*n
+end)
 
