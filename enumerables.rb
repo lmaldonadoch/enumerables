@@ -38,7 +38,7 @@ module Enumerable
       elsif !pattern.nil?
         return false unless x == pattern
       else
-        return true
+        return false unless x
       end
     end
     true
@@ -66,7 +66,7 @@ module Enumerable
   end
 
   def my_none?(pattern = nil)
-    return true if include?(true) || (self - [nil, false]) == [] || length < 2
+    return true if (self - [nil, false]) == [] || length < 2
 
     my_each_with_index do |x, i|
       if block_given?
@@ -110,7 +110,7 @@ module Enumerable
   end
 
   def my_inject(*args)
-    dummy = dup
+    dummy = dup.to_a
     args.reverse! if args.length > 1 && args[1].class != Symbol
     unless block_given?
 
