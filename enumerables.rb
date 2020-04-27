@@ -60,9 +60,9 @@ module Enumerable
         return true unless x
       end
     end
-    return false unless pattern.nil?
+    return true if pattern.nil?
 
-    true
+    false
   end
 
   def my_none?(pattern = nil)
