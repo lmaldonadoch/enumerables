@@ -28,7 +28,6 @@ module Enumerable
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 
   def my_all?(pattern = nil)
-
     my_each do |x|
       if block_given?
         return false unless yield x
@@ -46,8 +45,8 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-
     return false if (self - [nil, false]) == []
+
     my_each do |x|
       if block_given?
         return true if yield x
@@ -62,6 +61,7 @@ module Enumerable
       end
     end
     return false unless pattern.nil?
+
     true
   end
 
@@ -77,8 +77,8 @@ module Enumerable
         return false if x.class == pattern
       elsif !pattern.nil?
         return false if x == pattern
-      else
-        return false if (i > 0 && self[i] != self[i-1])
+      elsif i.positive? && self[i] != self[i - 1]
+        return false
       end
     end
     true
@@ -111,9 +111,7 @@ module Enumerable
 
   def my_inject(*args)
     dummy = dup
-    if args.length > 1 && args[1].class != Symbol
-      args.reverse!
-    end
+    args.reverse! if args.length > 1 && args[1].class != Symbol
     unless block_given?
 
       sum = (args.length > 1 ? args.shift : dummy.shift)
@@ -127,8 +125,8 @@ module Enumerable
     dummy.my_each { |x| sum = yield sum, x }
     sum
   end
+end
 
-  def multiply_els
-    my_inject(:*)
-  end
+def multiply_els(arr)
+  arr.my_inject(:*)
 end
