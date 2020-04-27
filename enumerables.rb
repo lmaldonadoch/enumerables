@@ -60,7 +60,7 @@ module Enumerable
         return true unless x
       end
     end
-    return true if pattern.nil?
+    return true if pattern.nil? && !block_given?
 
     false
   end
