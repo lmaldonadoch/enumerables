@@ -111,9 +111,12 @@ module Enumerable
 
   def my_inject(*args)
     dummy = dup
+    if args.length > 1 && args[1].class != Symbol
+      args.reverse!
+    end
     unless block_given?
 
-      sum = (args.length >= 1 ? args.shift : sum = dummy.shift)
+      sum = (args.length > 1 ? args.shift : dummy.shift)
 
       dummy.my_each { |x| sum = sum.send(args[0].to_s, x) }
       return sum
