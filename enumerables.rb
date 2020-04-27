@@ -47,6 +47,7 @@ module Enumerable
 
   def my_any?(pattern = nil)
 
+    return false if (self - [nil, false]) == []
     my_each do |x|
       if block_given?
         return true if yield x
@@ -61,22 +62,23 @@ module Enumerable
       end
     end
     return false unless pattern.nil?
-    return false unless (self - [nil, false]).length == []
     true
   end
 
   def my_none?(pattern = nil)
-    return true if include?(true)
+    return true if include?(true) || (self - [nil, false]) == [] || length < 2
 
-    my_each do |x|
+    my_each_with_index do |x, i|
       if block_given?
         return false if yield x
       elsif pattern.class == Regexp
         return false if pattern =~ x
       elsif pattern.class == Class
         return false if x.class == pattern
+      elsif !pattern.nil?
+        return false if x == pattern
       else
-        return true
+        return false if (i > 0 && self[i] != self[i-1])
       end
     end
     true
