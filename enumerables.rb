@@ -28,7 +28,6 @@ module Enumerable
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 
   def my_all?(pattern = nil)
-    return false if include?(nil) || include?(false)
 
     my_each do |x|
       if block_given?
@@ -37,6 +36,8 @@ module Enumerable
         return false unless pattern =~ x
       elsif pattern.class == Class
         return false unless x.class == pattern
+      elsif !pattern.nil?
+        return false unless x == pattern
       else
         return true
       end
@@ -45,8 +46,6 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-    return true if include?(nil)
-    return true if include?(false)
 
     my_each do |x|
       if block_given?
@@ -55,11 +54,15 @@ module Enumerable
         return true if pattern =~ x
       elsif pattern.class == Class
         return true if x.class == pattern
+      elsif !pattern.nil?
+        return true if x == pattern
       else
-        return false
+        return true unless x
       end
     end
-    false
+    return false unless pattern.nil?
+    return false unless (self - [nil, false]).length == []
+    true
   end
 
   def my_none?(pattern = nil)
@@ -108,7 +111,7 @@ module Enumerable
     dummy = dup
     unless block_given?
 
-      sum = (args.length.positive? ? args.shift : sum = dummy.shift)
+      sum = (args.length >= 1 ? args.shift : sum = dummy.shift)
 
       dummy.my_each { |x| sum = sum.send(args[0].to_s, x) }
       return sum
