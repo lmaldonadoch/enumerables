@@ -7,6 +7,7 @@ describe Enumerable do
       expect(array.my_each{ |n| n*n }).to eql(array)
     end
   end
+  
 
   describe '#my_each_with_index' do
     it 'returns each element' do
@@ -27,14 +28,32 @@ describe Enumerable do
   end
 
   describe '#my_any?' do
-    it 'returns even numbers' do
+    it 'returns true if any number is even' do
       expect(array.my_any?{ |n| n.even? }).to eql(true)
     end
   end
 
   describe '#my_none?' do
-    it 'returns even numbers' do
-      expect(array.my_any?{ |n| n.even? }).to eql(true)
+    it 'returns false for even numbers' do
+      expect(array.my_none?{ |n| n.even? }).to eql(false)
+    end
+  end
+
+  describe '#my_count' do
+    it 'returns the amount of elements who are even' do
+      expect(array.my_count{ |n| n.even? }).to eql(4)
+    end
+  end
+
+  describe '#my_map' do
+    it 'returns the numbers squared' do
+      expect(array.my_map{ |i| i * i }).to eql([1,4,9,16,25,36,49,64,81])
+    end
+  end
+
+  describe '#my_inject' do
+    it 'returns the sum of all the array elements' do
+      expect(array.my_inject(:+)).to eql(45)
     end
   end
 end
