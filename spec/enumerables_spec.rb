@@ -20,9 +20,21 @@ describe Enumerable do
     end
   end
 
-  describe '#my_all' do
-    it 'returns even numbers' do
+  describe '#my_all?' do
+    it 'Are all even numbers' do
       expect(array.my_all?{ |n| n.even? }).to eql(false)
+    end
+  end
+
+  describe '#my_any?' do
+    it 'returns even numbers' do
+      expect(array.my_any?{ |n| n.even? }).to eql(true)
+    end
+  end
+
+  describe '#my_none?' do
+    it 'returns even numbers' do
+      expect(array.my_any?{ |n| n.even? }).to eql(true)
     end
   end
 end
