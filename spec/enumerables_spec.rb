@@ -40,7 +40,7 @@ describe Enumerable do
   end
 
   describe '#my_all?' do
-    it 'Are all even numbers' do
+    it 'Returns false for even numbers' do
       expect(array.my_all?(&:even?)).to eql(false)
     end
 

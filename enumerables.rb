@@ -104,9 +104,8 @@ module Enumerable
   def my_map(proc = nil)
     return to_enum unless block_given?
 
-    my_arr = *self
     ret_arr = []
-    my_arr.my_each { |x| ret_arr << (!proc.nil? ? proc.call(x) : yield(x)) }
+    to_a.my_each { |x| ret_arr << (!proc.nil? ? proc.call(x) : yield(x)) }
     ret_arr
   end
 
