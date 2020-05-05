@@ -5,10 +5,10 @@ describe Enumerable do
   let(:words_array) { %w[ant bear cat] }
   let(:nil_true) { [nil, true, 99, false] }
   let(:proced) { proc { |n| n * 2 } }
-  let(:regexp_array) {['haystack', 'hay', 'hayabusa']}
+  let(:regexp_array) { %w[haystack hay hayabusa] }
   describe '#my_each' do
     it 'Returns each element' do
-      expect(array.my_each { |n| n * n }).to eql(array.each { |n| n * n })
+      expect(array.my_each { |n| n**2 }).to eql(array.each { |n| n**2 })
     end
 
     it 'Returns enumerator' do
@@ -28,7 +28,7 @@ describe Enumerable do
 
   describe '#my_each_with_index' do
     it 'Returns each element' do
-      expect(array.my_each_with_index { |n, i| n * n }).to eql(array.each_with_index { |n, i| n * n })
+      expect(array.my_each_with_index { |n, _i| n**2 }).to eql(array.each_with_index { |n, _i| n**2 })
     end
 
     it 'Returns enumerator' do
