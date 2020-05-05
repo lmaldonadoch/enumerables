@@ -6,6 +6,10 @@
 
 These new personalized methods return the same variable type and output that the original methods of the Module. To achieve that, I had to write some complex coding that overpassed the allowed complexity by Rubocop, so I had to override the CyclomaticComplexity cop.
 
+## Testing cases
+
+For the new branch, we added some RSpec validations. We included some test cases to validate our newly created methods with the original Enumerable methods.
+
 ## Live version
 
 [Live Version](https://repl.it/@lmaldonadoch/Enumerable-methods)
