@@ -105,7 +105,7 @@ module Enumerable
     return to_enum unless block_given?
 
     ret_arr = []
-    my_each { |x| ret_arr << (!proc.nil? ? proc.call(x) : yield(x)) }
+    to_a.my_each { |x| ret_arr << (!proc.nil? ? proc.call(x) : yield(x)) }
     ret_arr
   end
 
